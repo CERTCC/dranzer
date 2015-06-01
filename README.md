@@ -226,7 +226,7 @@ AxMan is a browser-based method fuzz tester. AxMan is designed to fuzz test all 
 A single COM object that was known to be vulnerable was used to compare the fuzz test tools:
 
 Feature | Dranzer | axfuzz | COMRaider | AxMan 
- -- | -------- | ------ | --------- | ----- 
+--- | -------- | ------ | --------- | ----- 
 Time to test object | 1 sec. | 4 sec. | 140 sec. | 660 sec.
 Exceptions found | 3 | 2 | 3 | 1
 Vulnerability classes covered ||||

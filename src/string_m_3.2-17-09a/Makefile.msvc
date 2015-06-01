@@ -1,0 +1,19 @@
+OBJ = constraint.obj fprintf_m.obj fscanf_m.obj getstr_m.obj\
+	makestr.obj printf_m.obj sprintf_m.obj sscanf_m.obj strcat_m.obj\
+	strcmp_m.obj strcpy_m.obj strdelete_m.obj strdup_m.obj strlen_m.obj\
+	strslice_m.obj strspn_m.obj strtest.obj strtok_m.obj test.obj
+	
+all: stringtest.exe
+
+clean:
+	del stringtest.exe\
+		contraint.exe\
+		*.obj
+
+stringtest.exe: $(OBJ)
+	cl /W4 /nologo /Festringtest.exe *.obj
+		
+.c.obj::
+	cl /W4 /nologo -c $<
+	
+$(OBJ):

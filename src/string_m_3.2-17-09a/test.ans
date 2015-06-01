@@ -1,0 +1,149 @@
+Testing strcreate_m function...
+
+strcreate_m() Case #1--> "hello, world."  [success]
+strcreate_m() Case #2--> ""  [success]
+strcreate_m() Case #3--> (null) [success]
+
+
+Done testing strcreate_m
+
+
+Set up for strcpy_m Cases ---> [success]
+strcpy_m() Case #1--> "hello, world."  "hello, world."  [success]
+strcpy_m() Case #2--> "hello, world."  "hello, world."  [success]
+strcpy_m() Case #3--> "hello, world."  "hello, world."  [success]
+Tear down after strcpy_m Cases --> [success]
+Testing strtok_m function....
+
+strtok_m() Case #1 --> "hello,"  "world."  [success]
+
+
+Done testing strtok_m
+Testing setcharset()....
+setcharset() Case #1 --> [success]
+setcharset() Case #2 --> [success]
+setcharset() Case #3 --> [success]
+Cleaning up after setcharset test cases --> [success]
+
+
+Done testing setcharset
+
+Testing sprintf functions....
+sprintf_m Case #1A --> "int = 7"  [success]
+sprintf_m Case #1B --> "int =   7"  [success]
+sprintf_m Case #1C --> "int = 7  "  [success]
+sprintf_m Case #1D --> "int = 007"  [success]
+sprintf_m Case #2 --> "str = str = %s"  [success]
+sprintf_m Case #3 --> "aaaaaaaaaaaaaaaaaaaaaaaaaaa"  [success]
+sprintf_m Case #3 --> (null) [success]
+sprintf_m %f test -->Specifier not currently supported: %f, 0.011100
+ Got "", expected ".011100" ""  Expected length of 7, got length of 0 [failure]
+
+
+Done testing sprintf_m
+
+strdelete_m Case #1 --> [success]
+strncat_m Case #1 ---> "hello, world."  [success]
+strncat_m Case #2 ---> "hello, world."  [success]
+strncat_m Case #3 ---> "hello, world.hello, world."  [success]
+strncat_m Case #4 ---> "hello, world."  [success]
+strncat_m Case #5 ---> "hello, world.hello"  [success]
+strncat_m Case #6 ---> [success]
+strncat_m Case #7 ---> "aaaaaaaa"  [success]
+
+strcmp_m setup ---> [success]
+strcmp_m Case #1 ---> [success]
+strcmp_m Case #2 ---> [success]
+strcmp_m Case #3 ---> [success]
+strcmp_m Case #4 ---> [success]
+strcmp_m Case #5 ---> [success]
+
+strncmp_m Case #1 ---> [success]
+strncmp_m Case #2 ---> [success]
+strncmp_m Case #3 ---> [success]
+strncmp_m Case #4 ---> [success]
+strncmp_m Case #5 ---> [success]
+strncmp_m Case #6 ---> [success]
+Tearing down strcmp_m ---> [success]
+
+cstrchr_m Case #1 ---> "o, world."  [success]
+cstrchr_m Case #2 ---> [success]
+cstrchr_m Case #3 ---> [success]
+cstrchr_m Case #4 ---> [success]
+
+strspn_m Case #1 ---> [success]
+strspn_m Case #2 ---> [success]
+strspn_m Case #3 ---> [success]
+strspn_m Case #4 ---> [success]
+strncspn_m Case #1 ---> [success]
+strncspn_m Case #2 ---> [success]
+strncspn_m Case #3 ---> [success]
+strncspn_m Case #4 ---> [success]
+strncspn_m Case #5 ---> [success]
+strncspn_m Case #6 ---> [success]
+
+setcharset_m Case #1 ---> [success]
+
+setcharset_m Case #2 ---> [success]
+
+setcharset_m Case #3 ---> [success]
+
+NTBS testing completed
+
+strcreate_m for wide_t testing---> [success]
+
+wstrcpy_m Case #1 ---> [success]
+cstrcpy_m/wgetstr_m Case #1 ---> [success]
+cstrcpy_m/wstrcat_m Case #1 ---> [success]
+wstrcpy_m/cstrcat_m Case #1 ---> [success]
+wstrcreate_m Case #1 ---> [success]
+strcreate_m/wgetstr_m Case #2 ---> [success]
+strcreate_m/wstrcat_m Case #2 ---> [success]
+wstrcpy_m/cstrcat_m Case #1 ---> [success]
+wcharset Case #1 ---> [success]
+wcharset Case #2 ---> [success]
+wcharset Case #3 ---> [success]
+wcharset Case #4 ---> [success]
+wcharset Case #5 ---> [success]
+wcharset Case #6 ---> [success]
+wcharset Case #7 ---> [success]
+wcharset Case #8 ---> [success]
+strtok_m Case #1 ---> [success]
+strtok_m Case #2 ---> [success]
+
+wstrncat_m Case #1 ---> [success]
+
+Wide testing completed
+
+
+Total testing errors: 2
+strslice_m Case #1 ---> "hello, world.wo"  [success]
+strslice_m Case #2 ---> ""  [success]
+strslice_m Case #3 ---> [success]
+strslice_m Case #4 ---> ""  [success]
+strslice_m Case #5 ---> "hello, world.d."  [success]
+strslice_m Case #6 ---> [success]
+strleft_m Case #1 ---> "aaabb"  [success]
+strleft_m Case #2 ---> [success]
+cchar_m Case #1 ---> [success]
+wchar_m Case #1 ---> [success]
+hello 10
+hello, world. I have 100 coconuts and 10 shrimp
+x k w
+hello world today
+he llo worl
+world toda
+he llo worl
+12
+ERROR 22: strcreate_m: Charset Invalidates String
+ERROR 22: cstrcat_m: Charset Invalidates string
+ERROR 22: strdelete_m: 1st Argument NULL Pointer
+ERROR 22: cstrcat_m: Charset Invalidates string
+ERROR 22: setcharset_m: Charset Invalidates String
+fwide: Success
+ERROR 22: wstrcat_m: Charset Invalidates String
+ERROR 22: wstrcpy_m: Charest Invalidates String
+ERROR 22: wstrncpy_m: Charset Invalidates String To Be Copied
+ERROR 22: wstrncpy_m: Charset Invalidates String To Be Copied
+ERROR 22: wstrncpy_m: Charset Invalidates String To Be Copied
+ERROR 22: strtok_m: 2nd and 3rd Argument String Types Don't Match

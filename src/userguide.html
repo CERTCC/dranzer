@@ -1,0 +1,942 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html style="direction: ltr;"><head>
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=windows-1252"><title>CERT Dranzer User Guide</title>
+
+<style type="text/css">
+body {
+  margin: 20px;
+}
+p {
+  margin-bottom: 0.08in;
+  direction: ltr;
+  color: #000000;
+  line-height: 0.19in;
+  widows: 2;
+  orphans: 2;
+}
+p.western {
+  font-family: "Times New Roman",serif;
+  font-size: 10pt;
+}
+p.cjk {
+  font-family: "Times New Roman",serif;
+  font-size: 10pt;
+}
+p.ctl {
+  font-family: "Times New Roman",serif;
+  font-size: 10pt;
+}
+h1 {
+  margin-right: 0.5in;
+  margin-bottom: 0.08in;
+  direction: ltr;
+  color: #000000;
+  line-height: 0.2in;
+  widows: 2;
+  orphans: 2;
+  page-break-after: auto;
+}
+h1.western {
+  font-family: "Arial",sans-serif;
+  font-size: 16pt;
+}
+h1.cjk {
+  font-family: "Times New Roman",serif;
+  font-size: 16pt;
+}
+h1.ctl {
+  font-family: "Arial",sans-serif;
+  font-size: 16pt;
+  font-weight: normal;
+}
+h2 {
+  margin-right: 0.5in;
+  margin-bottom: 0.08in;
+  color: #000000;
+  widows: 2;
+  orphans: 2;
+  page-break-after: auto;
+}
+h2.western {
+  font-family: "Arial",sans-serif;
+  font-size: 12pt;
+  font-style: italic;
+}
+h2.cjk {
+  font-family: "Arial",sans-serif;
+  font-size: 12pt;
+  font-style: italic;
+}
+h2.ctl {
+  font-family: "Arial",sans-serif;
+  font-size: 13pt;
+  font-weight: normal;
+}
+a:link {
+  color: #0000ff;
+}
+
+</style>
+</head>
+
+<body style="color: rgb(0, 0, 0);" link="#0000ff">
+<div type="HEADER">
+<p style="margin-left: -0.04in; margin-top: 0.08in; margin-bottom: 0.37in;" lang=""> <img style="border: 0px solid ; width: 107px; height: 78px; float: left;" alt="CERT Logo" src="images/certlogo.png" name="graphics2" hspace="12"><br>
+<br>
+</p>
+</div>
+<p style="margin-top: 2.78in; margin-bottom: 0in; margin-left: 40px;" lang=""><font face="Arial, sans-serif"><font style="font-size: 22pt;" size="6">Dranzer
+1.9 User’s Guide</font></font></p>
+<p style="margin-top: 0.42in; margin-bottom: 0in; margin-left: 40px;"><font face="Arial, sans-serif"><font style="font-size: 9pt;" size="2">Dan
+Plakosh and Will Dormann</font></font></p>
+<p style="margin-top: 0.5in; margin-bottom: 0in; margin-left: 40px;"><font face="Arial, sans-serif"><font style="font-size: 9pt;" size="2"><b>April 16,
+2009</b></font></font></p>
+<h1 class="western"><br>
+</h1>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<h1 class="western" style="page-break-before: always;">Overview</h1>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">ActiveX
+and COM vulnerabilities have been getting much attention lately.
+ActiveX allows a web browser to use software components installed on
+a Windows machine. Scripting technologies can allow an attacker to
+control the memory contents of a machine. By combining scripting and
+ActiveX, an attacker can take advantage of flaws in COM objects,
+which may allow execution of arbitrary code, information disclosure,
+or other security violations.</p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">Dranzer
+is a tool that can detect flaws in COM objects.</p>
+<h1 class="western"><br>
+Target Audience</h1>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">Dranzer
+can be useful to various groups of people:</p>
+<ol>
+<li>
+<p style="margin-top: 0.01in; margin-bottom: 0.01in; line-height: 0.2in;">Software
+developers can test COM objects as they are being developed.
+By testing during the software development process, developers can
+prevent vulnerabilities before the software is released to the public.</p>
+</li>
+<li>
+<p style="margin-top: 0.01in; margin-bottom: 0.01in; line-height: 0.2in;">Software
+vendors can detect and fix flaws in their COM objects before
+attackers discover the flaws.</p>
+</li>
+<li>
+<p style="margin-top: 0.01in; margin-bottom: 0.01in; line-height: 0.2in;">System
+administrators can assess the security of their systems with
+respect to COM objects.</p>
+</li>
+</ol>
+<h1 class="western"><br>
+ActiveX Vulnerability Classes</h1>
+<h2 class="western">I. COM objects that crash Internet
+Explorer upon
+instantiation.</h2>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">Some
+COM objects will crash Internet Explorer just by being referenced in
+a web page. The COM object may not have been intended for a web
+browser, but Internet Explorer will attempt to instantiate any COM
+object that is referenced in an &lt;OBJECT&gt; tag, regardless
+of
+whether the object is a traditional ActiveX control. Certain COM
+objects will cause Internet Explorer to crash in a manner that
+attackers can exploit to execute arbitrary code.</p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">More
+information about this class of vulnerabilities is available in
+“Multiple COM objects cause memory corruption in Microsoft
+Internet Explorer” (<font color="#0000ff"><u><a href="http://www.kb.cert.org/vuls/id/959049">http://www.kb.cert.org/vuls/id/959049</a></u></font>).</p>
+<h2 class="western">II. COM objects that fail to properly
+validate
+input.</h2>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">Attackers
+can use a script within a web page to control COM objects that are
+marked “Safe for scripting.” This script would call
+methods or access properties of the COM object. Attackers can control
+COM objects that are marked “Safe for initialization” by
+using &lt;PARAM&gt; tags in a web page. If the COM object fails
+to
+properly validate input, such as enforcing a maximum size for a
+string parameter, an attacker may be able to pass specially crafted
+parameters that would cause the object to crash Internet Explorer in
+a way that the attacker could exploit.</p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">An
+example of this type of vulnerability is available in “RealPlayer
+ActiveX control contains buffer overflow in ‘ShowPreferences’”
+(<font color="#0000ff"><u><a href="http://www.kb.cert.org/vuls/id/698390">http://www.kb.cert.org/vuls/id/698390</a></u></font>).</p>
+<h2 class="western">III. COM objects that do not restrict
+access to
+its methods.</h2>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">Unless
+special restrictions are in place, any web page can call the methods
+provided by safe-for-scripting COM objects. Attackers may be able to
+take advantage of some of these methods to disclose information
+unintentionally; they may even be able to download and execute
+applications.</p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">An
+example of this type of vulnerability is available in “Microsoft
+Log Sink Class ActiveX control incorrectly marked ‘safe for
+scripting’” (<font color="#0000ff"><u><a href="http://www.kb.cert.org/vuls/id/165022">http://www.kb.cert.org/vuls/id/165022</a></u></font>).</p>
+<h1 class="western"><br>
+Dranzer system requirements</h1>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">Operating
+system: Windows Vista, XP or Windows 2000. Windows XP is preferred.</p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">Browser:
+Internet Explorer with ActiveX enabled for the Internet Zone (IE 6
+and earlier) and Local Intranet Zone (IE 7 or later)</p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;"><b>Note</b>:
+We do not recommend running Dranzer on production systems. The
+process of testing COM objects essentially involves executing pieces
+of code that exist on a system, and this may have adverse effects in
+a test environment.<br>
+</p>
+<h1 class="western"><br>
+Running Dranzer</h1>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">C:\Program
+Files\Dranzer\Dranzer\Release&gt;Dranzer.exe</font></p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">Execution mode not
+specified use
+-g,-k,-l,-b, or -p</font></p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">Usage: Dranzer.exe
+&lt;options&gt;</font></p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">Options:</font></p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 80px;">
+<font face="Courier New, monospace">-o
+&lt;outputfile&gt; -
+Output Filename</font></p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 80px;">
+<font face="Courier New, monospace">-i
+&lt;inputfile&gt; -
+Use input file CLSID list</font></p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 80px;">
+<font face="Courier New, monospace">-d
+&lt;notestfile&gt; -
+Use don't test CLSID List</font></p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 80px;">
+<font face="Courier New, monospace">-g -
+Generate base COM list</font></p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 80px;">
+<font face="Courier New, monospace">-k -
+Generate Kill Bit COM list</font></p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 80px;">
+<font face="Courier New, monospace">-l -
+Generate Interface Listings</font></p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 80px;">
+<font face="Courier New, monospace">-b - Load
+In Browser (IE)</font></p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 80px;">
+<font face="Courier New, monospace">-t - Test
+Interfaces Properties and Methods</font></p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 80px;">
+<font face="Courier New, monospace">-p - Test
+PARAMS (PropertyBag) in Internet Explorer</font></p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 80px;">
+<font face="Courier New, monospace">-s - Test
+PARAMS (Binary Scan) in Internet Explorer</font></p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 80px;">
+<font face="Courier New, monospace">-n - Print
+COM object information</font></p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 80px;">
+<font face="Courier New, monospace">-v - Print
+out version information</font></p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">Dranzer
+has the ability to test all three of the COM vulnerability classes
+described above.</p>
+<h2 class="western">Class I: (<font face="Courier New, monospace">-b</font>)</h2>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">With
+the “<font face="Courier New, monospace">-b</font>”
+option, Dranzer will check for COM objects that cause Internet
+Explorer to crash upon their instantiation.</p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">Example
+usage:</p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 40px;">
+<font face="Courier New, monospace"> Dranzer.exe -o
+testmachine_crashie.txt -b</font></p>
+<h2 class="western">Class II: (<font face="Courier New, monospace">-t</font>,
+<font face="Courier New, monospace">-p</font>, <font face="Courier New, monospace">-s</font>)</h2>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">With
+the “<font face="Courier New, monospace">-t</font>”
+option, Dranzer will check for COM objects that fail to properly
+validate input to methods.</p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">Example
+usage:</p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 40px;">
+<font face="Courier New, monospace"> Dranzer.exe -o
+testmachine_report.txt -t</font></p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">With
+the “<font face="Courier New, monospace">-p</font>”
+and
+“<font face="Courier New, monospace">-s</font>”
+options,
+Dranzer will check for COM objects that fail to properly validate
+input to initialization parameters. Dranzer will check for available
+parameters by using either the IPropertyBag interface or by scanning
+the binary file, respectively.</p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">Example
+usage:</p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 40px;">
+<font face="Courier New, monospace"> Dranzer.exe -o
+testmachine_param_bag.txt -p</font></p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 40px;">
+<font face="Courier New, monospace"> Dranzer.exe -o
+testmachine_param_scan.txt -s</font></p>
+<h2 class="western">Class III: (<font face="Courier New, monospace">-l</font>)</h2>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">With
+the “<font face="Courier New, monospace">-l</font>”
+option, Dranzer will enumerate the methods and properties of COM
+objects that are marked “safe for scripting.”</p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">Example
+usage:</p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 40px;">
+<font face="Courier New, monospace"> Dranzer.exe –o
+testmachine_methods.txt -l</font></p>
+<h2 class="western"><br>
+Using baselines and exception lists</h2>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">The
+“<font face="Courier New, monospace">-g</font>”
+option
+can be used to create a “baseline” list of COM objects
+installed on a machine. This capability can be useful for determining
+what COM objects an application provides. For example:</p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">1)
+Create a baseline snapshot for the machine being used in the test:</p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 40px;">
+<font face="Courier New, monospace"> Dranzer.exe -o
+baseline.txt -g</font></p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">2)
+Install software package</p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">3)
+Run Dranzer with the “<font face="Courier New, monospace">-d</font>”
+option to exclude the COM objects in the baseline:</p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 40px;">
+<font face="Courier New, monospace"> Dranzer -d
+baseline.txt -o
+myapp_crashie.txt -b</font></p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">Alternatively,
+you can execute the <font face="Courier New, monospace">alltests.bat</font>
+script to run all Dranzer tests for COM objects that do not exist in
+the <font face="Courier New, monospace">baseline.txt</font>
+file.
+Rather than using the command line listed in step 3, simply run
+<font face="Courier New, monospace">alltests.bat</font>.
+This will
+test only the new COM objects that were installed with the software
+package in step 2. Included in the Dranzer installation are the files
+<font face="Courier New, monospace">xpprosp2.txt</font>
+and
+<font face="Courier New, monospace">vista.txt</font>.
+These files
+contain a list of COM objects that come with Windows XP Professional
+SP2 and Windows Vista, respectively. You can use these files as a
+starting point for testing COM objects on a system if you were unable
+to generate a baseline before installing the software.</p>
+<h2 class="western"><br>
+Using input lists</h2>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">The
+“<font face="Courier New, monospace">-i</font>”
+option
+can be used if you wish to provide a list of the COM objects that you
+would like to be tested.</p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">Example
+usage:</p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace"> Dranzer.exe -i
+mycomobjects.txt
+-o myobjects_test.txt -t</font></p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">This
+command will test the methods of the COM objects listed in the
+“mycomobjects.txt” input file. </p>
+<h1 class="western"><br>
+Interpreting the results</h1>
+<h2 class="western">Class I: (<font face="Courier New, monospace">-b</font>)</h2>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">The
+output file will contain a list of all COM objects that have caused
+Internet Explorer to crash on their instantiation. The crashes are
+usually caused by memory access violations.</p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">As
+Dranzer encounters COM objects that cause Internet Explorer to crash,
+it will save HTML files in the current directory. Opening these files
+in Internet Explorer can help to verify the crashes. The file names
+will be <font face="Courier New, monospace">{GUID}_load.html</font>,
+where <font face="Courier New, monospace">GUID</font>
+is the
+identifier for the COM object.</p>
+<h2 class="western">Class II: (<font face="Courier New, monospace">-t</font>,
+<font face="Courier New, monospace">-p</font>, <font face="Courier New, monospace">-s</font>)</h2>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">The
+output file will list all COM objects that have caused Internet
+Explorer to crash when Dranzer passed unexpected values to their
+methods. You can see the methods and properties that were accessed
+prior to the crash. The crashes are usually caused by memory access
+violations.</p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">As
+Dranzer encounters COM objects that cause Internet Explorer to crash
+as the result of initialization parameters, it will save HTML files
+in the current directory. Opening these files in Internet Explorer
+can help to verify the crashes. The file names will be
+<font face="Courier New, monospace">{GUID}_param_pb.html</font>
+or
+<font face="Courier New, monospace">{GUID}_param_bs.html</font>,
+depending on which flag was used. Dranzer does not determine the
+specific parameter that caused the crash but rather includes all
+possible parameters in the HTML file.</p>
+<h2 class="western">Detailed crash analysis of COM objects</h2>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">For
+both Class I and Class II COM object vulnerabilities, any access
+violation can indicate a vulnerability that an attacker may be able
+to exploit to execute arbitrary code. As a general rule, the more
+control an attacker has over the crash, the more likely that an
+arbitrary code execution vulnerability exists. Dranzer uses lowercase
+‘x’ characters to test for buffer overflows, so any time
+the value “<font face="Courier New, monospace">78</font>”
+is seen in the crash details, it usually indicates an exploitable
+flaw. In certain circumstances, Dranzer will detect an access
+violation but will not show details such as memory locations and
+operation. This situation can happen when the buffer overflow causes
+the structured exception handler (SEH) to be overwritten. When the
+SEH is overwritten, Dranzer is not able to trap the access violation
+and will not be able to display the crash details for the method that
+caused the buffer overflow. In these cases, the very last method
+called for a COM object is suspect. When testing fixes for COM
+objects, Dranzer must be able to test the object without indicating
+any access violations in the results.<br>
+</p>
+<h1 class="western"><br>
+Dranzer output examples</h1>
+<h2 class="western">Top-level errors</h2>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">In
+the Dranzer output, these errors are listed at the beginning of each
+failed COM object. Possible errors include the following:</p>
+<p style="text-indent: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">ERROR - Access
+violation
+(0xc0000005)</font></p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">This
+error indicates a crash as the result of accessing an invalid area of
+memory.</p>
+<p style="text-indent: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">ERROR - Buffer Overrun
+Fault
+(0xfffffff3)</font></p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">This
+error is usually indicative of a buffer overflow that is caught by
+Microsoft’s <font face="Courier New, monospace">/GS</font>
+buffer security check. The <font face="Courier New, monospace">/GS</font>
+buffer overflow protection can make it more difficult to exploit the
+vulnerability. However, depending on what the vulnerable control’s
+code does, and whether the <font face="Courier New, monospace">/SAFESEH</font>
+flag was used, an attacker can often bypass this protection. Note
+that Dranzer can produce this error as a false positive if the
+control uses the same error code for other errors. Also note that
+Dranzer will not clearly indicate which method caused the buffer
+overrun fault error code, but it will be the last method or property
+listed in the Dranzer output.</p>
+<p style="text-indent: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">ERROR - COM Object
+Exception
+Occurred (0xfffffff9)</font></p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">The
+COM object has generated an exception, which is usually the result of
+a memory access violation.</p>
+<p style="text-indent: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">ERROR - Internet
+Explorer Crashed
+(0xfffffff7)</font></p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">The
+HTML test case caused IE to crash. Use the relevant HTML file in the
+Dranzer directory to reproduce the crash.</p>
+<p style="text-indent: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">ERROR - COM Object
+Operation Hung
+(0xffffffff)</font></p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">The
+COM object has not responded within the time allowed. Certain COM
+objects can hang when a web page attempts to use them; others can
+have specific methods that will cause the hang. With either of these
+situations, the errors are not normally exploitable, but in certain
+cases a buffer overflow or other error can cause memory corruption
+that will lead to a hang. You need to further investigate these
+errors by testing other input values, if possible, to determine if
+this is the case.</p>
+<h2 class="western">Method-level errors</h2>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">In
+the Dranzer output, Method-level errors are listed for specific
+methods or properties. The following are example errors:</p>
+<p style="margin-left: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">*****************************</font></p>
+<p style="margin-left: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">*** Access Violation
+***</font></p>
+<p style="margin-left: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">*****************************</font></p>
+<p style="margin-left: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">Invoked Property Get -
+ObjectName::short PropName()</font></p>
+<p style="margin-left: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">Access violation at
+0x6E205539
+:Bad read on 0x00000000</font></p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">This
+is a null pointer dereference access violation as the result of
+attempting to refer to the “PropName” property. It is
+less likely to be exploitable because of the null pointer and also
+because the property takes no parameters. However, keep in mind that
+the Dranzer testing is sequential, so a crash in a specific method or
+parameter may be the result of the actions that took place before
+(above) it.</p>
+<p style="margin-left: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">*****************************</font></p>
+<p style="margin-left: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">*** Access Violation
+***</font></p>
+<p style="margin-left: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">*****************************</font></p>
+<p style="margin-left: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">Invoked Method -
+ObjectName::VARIANT_BOOL MethodName()</font></p>
+<p style="margin-left: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">Access violation at
+0x7C91142E
+:Bad read on 0x78787878</font></p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">This
+indicates that a buffer overflow has taken place, with the memory
+address being the value specified in a buffer value (lowercase ‘x’
+being <font face="Courier New, monospace">0x78</font>
+in ASCII).
+Depending on what the COM object is doing with the value that is
+being read from that location, this flaw has a high probability that
+an attacker can exploit it to execute arbitrary code. Note that this
+is another case in which the method that triggers the access
+violation is not the one that accepts user input. The buffer overflow
+likely took place in a previous parameter or method operation, but
+what is experienced can be considered a “second-order”
+flaw because the symptoms of the flaw are not immediately seen.</p>
+<p style="margin-left: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">*****************************</font></p>
+<p style="margin-left: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">*** Access Violation
+***</font></p>
+<p style="margin-left: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">*****************************</font></p>
+<p style="margin-left: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">Invoked Method -
+ObjectName::long
+MethodName([in] BSTR ParameterName&lt;"xxxx.....{10240}"&gt;)</font></p>
+<p style="margin-left: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">Access violation at
+0x78787878
+:Bad read on 0x78787878</font></p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">This
+indicates a buffer overflow vulnerability that is trivially
+exploitable. Two identical memory addresses indicate that the COM
+object is trying to execute code at the specified address. In this
+case, it’s the hex value of the characters in the parameter
+specified for the method.</p>
+<p style="margin-left: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">*****************************</font></p>
+<p style="margin-left: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">*** Access Violation
+***</font></p>
+<p style="margin-left: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">*****************************</font></p>
+<p style="margin-left: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">Invoked Property Get -
+ObjectName::long PropertyName(long ParameterName&lt;-1&gt;)</font></p>
+<p style="margin-left: 0.5in; margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%;">
+<font face="Courier New, monospace">Access violation at
+0x6338092E
+:Bad read on 0xFFFFFFFF</font></p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">This
+is an example of a possible integer overflow. Depending on how the
+memory address can be affected by various parameter values, the flaw
+may be exploitable.</p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;"><b>Note:</b>
+If there is a top-level error reported, but no method-level violation
+is present, look at the last method or parameter that Dranzer tested
+in the output. This last entry is likely the one that caused the SEH
+to be overwritten or caused <font face="Courier New, monospace">/GS</font>
+protection to trigger. Both of these cases will prevent a
+method-level violation from being reported. Vulnerabilities in which
+the SEH is overwritten as the result of a buffer overflow are usually
+trivially exploitable.</p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">The
+behavior where the test process is terminated unexpectedly can cause
+important flaws to be overlooked. This can happen when a method-level
+violation is reported, but also the last method tested causes one of
+the exceptions described above. Dranzer may not report the
+method-level exception in the output. To work around this situation,
+use Dranzer to retest COM objects after all reported violations are
+fixed in the code and pay special attention to the last method listed
+in Dranzer test reports.</p>
+<h2 class="western">Class III: (<font face="Courier New, monospace">-l</font>)</h2>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">This
+class of vulnerabilities requires the most analysis to determine if
+there is a problem. Look for method names that an attacker could
+leverage. The following are some examples of dangerous methods:</p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 40px;">
+<font face="Courier New, monospace"> ShellExecute(BSTR)</font></p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 40px;">
+<font face="Courier New, monospace"> Reboot()</font></p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 40px;">
+<font face="Courier New, monospace">DownloadFile(BSTR,BSTR)</font></p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 40px;">
+<font face="Courier New, monospace">HttpPOST(BSTR,BSTR,BSTR)</font></p>
+<p style="margin-top: 0.04in; margin-bottom: 0.04in; line-height: 100%; margin-left: 40px;">
+<font face="Courier New, monospace"> GetUserName()</font></p>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">If
+the COM object does not restrict which web addresses can use the
+methods, attackers may be able to use the COM object to their
+advantage. </p>
+<h1 class="western"><br>
+Other COM fuzzers</h1>
+<h2 class="western">axfuzz -
+&lt;http://sourceforge.net/projects/axfuzz&gt;</h2>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">axfuzz
+was the inspiration for creating Dranzer. With the axfuzz package,
+you must use a combination of the axenum and axfuzz tools to fuzz
+test an entire system. When the testing tools crash, the tools must
+manually be restarted at a specific control after the one that caused
+the crash, and crash details are not included in the reports.</p>
+<h2 class="western">COMRaider -
+&lt;http://labs.idefense.com/labs-software.php?show=20&gt;</h2>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">COMRaider
+is a graphical tool for fuzz testing a single COM object. Crash
+details are included, which can help determine which COM flaws may be
+exploitable. Due to the program design, a high level of user
+interaction is required, and the tests take a long time to complete.</p>
+<h2 class="western">AxMan -
+&lt;http://metasploit.com/users/hdm/tools/axman&gt;</h2>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">AxMan
+is a browser-based method fuzz tester. AxMan is designed to fuzz test
+all of the COM objects installed on a system, and the test process
+involves multiple steps. Once a crash is encountered, the test
+process must be manually restarted to begin again using a control
+that exists in the list after the one that caused the crash. COM
+objects that display dialogs or present the Internet Explorer
+information bar will require a user to manually click those items to
+continue the test process. AxMan does not appear to support Internet
+Explorer 7.</p>
+<h2 class="western"><br>
+</h2>
+<h2 class="western">COM fuzzer comparison</h2>
+<p class="western" style="margin-top: 0.13in; margin-bottom: 0.13in;">A
+single COM object that was known to be vulnerable was used to compare
+the fuzz test tools:</p>
+<table style="width: 538px; height: 521px;" border="0" cellpadding="3" cellspacing="0">
+<col width="182"> <col width="97"> <col width="97"> <col width="97"> <col width="97"> <tbody>
+<tr valign="top">
+<td>
+<p style="margin-top: 0.03in;" class="western" lang="en-US"><br>
+</p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>Dranzer</b></p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>axfuzz</b></p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>COMRaider</b></p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>AxMan</b></p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p class="western" style="margin-top: 0.03in;" lang="en-US">Time to test object</p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>1 sec.</b></p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> 4 sec.</p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> 140 sec.</p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> 660 sec.</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p class="western" style="margin-top: 0.03in;" lang="en-US">Exceptions found</p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>3</b></p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> 2</p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>3</b></p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> 1</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p class="western" style="margin-top: 0.03in;" lang="en-US">Vulnerability classes covered:</p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <br>
+</p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <br>
+</p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <br>
+</p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <br>
+</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p class="western" style="margin-left: 0.25in; margin-top: 0.03in;" lang="en-US">Class
+I</p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>Yes</b></p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> No</p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> No</p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> No</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p class="western" style="margin-left: 0.25in; margin-top: 0.03in;" lang="en-US">Class
+II (methods)</p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>Yes</b></p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>Yes</b></p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>Yes</b></p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>Yes</b></p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p class="western" style="margin-left: 0.25in; margin-top: 0.03in;" lang="en-US">Class
+II (params)</p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>Yes</b></p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> No</p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> No</p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> No</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p class="western" style="margin-left: 0.25in; margin-top: 0.03in;" lang="en-US">Class
+III</p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>Yes</b></p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> No</p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> No</p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> No</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p class="western" style="margin-top: 0.03in;" lang="en-US">Output</p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> Text</p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> Text</p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>Database</b></p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> None</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p class="western" style="margin-top: 0.03in;" lang="en-US">User interaction required</p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>None</b></p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> Medium</p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> High</p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> Very high</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p class="western" style="margin-top: 0.03in;" lang="en-US">Test multiple objects</p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>Yes</b></p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>Yes</b></p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"><b>Yes</b></p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>Yes</b></p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p class="western" style="margin-top: 0.03in;" lang="en-US">Test sequences</p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>Yes</b></p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>Yes</b></p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> No</p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>Yes</b></p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p class="western" style="margin-top: 0.03in;" lang="en-US">Crash details reported</p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>Yes</b></p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> No</p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>Yes</b></p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> No</p>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<p class="western" style="margin-top: 0.03in;" lang="en-US">Multiple test values</p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> No</p>
+</td>
+<td>
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> No</p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>Yes</b></p>
+</td>
+<td style="background-color: rgb(153, 255, 153);">
+<p class="western" style="margin-top: 0.03in;" align="center" lang="en-US"> <b>Yes</b></p>
+</td>
+</tr>
+</tbody>
+</table>
+<h1 class="western"><br>
+<br>
+</h1>
+<h1 class="western">References</h1>
+<p style="margin-top: 0.13in; margin-bottom: 0.13in;">Microsoft
+ActiveX security resources:</p>
+<ul>
+<li>“Designing
+Secure ActiveX Controls”
+(<font color="#0000ff"><u><a href="http://msdn.microsoft.com/en-us/library/aa752035.aspx">http://msdn.microsoft.com/en-us/library/aa752035.aspx</a></u></font>)</li>
+<li>“ActiveX
+Security: Improvements and Best Practices”
+(<font color="#0000ff"><u><a href="http://msdn.microsoft.com/en-us/library/bb250471.aspx">http://msdn.microsoft.com/en-us/library/bb250471.aspx</a></u></font>)</li>
+<li>“How
+to
+stop an ActiveX control from running in Internet Explorer”
+(<font color="#0000ff"><u><a href="http://support.microsoft.com/kb/240797">http://support.microsoft.com/kb/240797</a></u></font>)</li>
+</ul>
+<p style="margin-top: 0.13in; margin-bottom: 0.13in;">“Results
+of the CERT/CC Security in ActiveX Workshop”
+(<font color="#0000ff"><u><a href="http://www.cert.org/reports/activeX_report.pdf">http://www.cert.org/reports/activeX_report.pdf</a></u></font>)
+</p>
+<p style="margin-top: 0.13in; margin-bottom: 0.13in;">Vulnerability
+notes:</p>
+<ul>
+<li>“Multiple
+COM objects cause memory corruption in Microsoft Internet Explorer”
+(<font color="#0000ff"><u><a href="http://www.kb.cert.org/vuls/id/959049">http://www.kb.cert.org/vuls/id/959049</a></u></font>)</li>
+<li>“RealPlayer
+ActiveX control contains buffer overflow in ‘ShowPreferences’”
+(<font color="#0000ff"><u><a href="http://www.kb.cert.org/vuls/id/698390">http://www.kb.cert.org/vuls/id/698390</a></u></font>)</li>
+<li>“Microsoft
+Log Sink Class ActiveX control incorrectly marked ‘safe for
+scripting’” (<font color="#0000ff"><u><a href="http://www.kb.cert.org/vuls/id/165022">http://www.kb.cert.org/vuls/id/165022</a></u></font>)</li>
+</ul>
+<p style="margin-top: 0.13in; margin-bottom: 0.13in;">Other
+COM fuzzers:</p>
+<ul>
+<li>axfuzz
+(<font color="#0000ff"><u><a href="http://sourceforge.net/projects/axfuzz">http://sourceforge.net/projects/axfuzz</a></u></font>)</li>
+<li>iDefense
+Labs
+Fuzzing Software Tools
+(<font color="#0000ff"><u><a href="http://labs.idefense.com/software/fuzzing.php#more_comraider">http://labs.idefense.com/software/fuzzing.php#more_comraider</a></u></font>)</li>
+<li>AxMan
+(<font color="#0000ff"><u><a href="http://metasploit.com/users/hdm/tools/axman">http://metasploit.com/users/hdm/tools/axman</a></u></font>)</li>
+</ul>
+<p style="margin-top: 0.13in; margin-bottom: 0.13in;"><br>
+<br>
+<br>
+</p>
+<div type="FOOTER">
+<p style="margin-left: -0.48in; margin-top: 0.24in; margin-bottom: 0in; line-height: 0.17in;" lang=""> <img style="border: 0px solid ; width: 494px; height: 30px; float: left;" alt="Software Engineering Institute | Carnegie Mellon" src="images/sei.png" name="graphics1" hspace="12"><br>
+</p>
+</div>
+</body></html>

@@ -246,7 +246,7 @@ Multiple test values | No | No | Yes | Yes
 Microsoft ActiveX security resources:
 
 * *Designing Secure ActiveX Controls* http://msdn.microsoft.com/en-us/library/aa752035.aspx
-* * *ActiveX Security: Improvements and Best Practices* http://msdn.microsoft.com/en-us/library/bb250471.aspx
+* *ActiveX Security: Improvements and Best Practices* http://msdn.microsoft.com/en-us/library/bb250471.aspx
 * *How to stop an ActiveX control from running in Internet Explorer* http://support.microsoft.com/kb/240797
 
 *Results of the CERT/CC Security in ActiveX Workshop* http://www.cert.org/reports/activeX_report.pdf
